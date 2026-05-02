@@ -1,0 +1,28 @@
+# Environment & secrets
+.env
+.streamlit/secrets.toml
+
+# SQLite database (jangan commit ke GitHub)
+*.db
+*.sqlite
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,35 @@
+name: Scrape MBG Early Warning
+
+on:
+  schedule:
+    # Jalankan setiap 6 jam: jam 00, 06, 12, 18 WIB (UTC+7)
+    - cron: '0 17,23,5,11 * * *'
+  workflow_dispatch:   # izinkan trigger manual dari tab GitHub Actions
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependensi
+        run: pip install -r requirements.txt
+
+      - name: Jalankan pipeline (scrape + analisis)
+        env:
+          # Secrets diisi di GitHub → Repository Settings → Secrets and Variables → Actions
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python scheduler.py
+
+      - name: Log hasil
+        run: echo "Pipeline selesai pada $(date '+%Y-%m-%d %H:%M:%S UTC')"
